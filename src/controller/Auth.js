@@ -11,8 +11,13 @@ export async function SingUp (req, res) {
     const passwordHashed = bcrypt.hashSync(password, 10)
 
     try {
+
+        const checkEmail = await db.collection('users').findOne({ email })
+
+        if(checkEmail) return res.status(409).send("Usuário já cadastrado.")
+
         await db.collection('users').insertOne({ name, email, password: passwordHashed })
-        res.status(201).send("OK")
+        res.status(201).send("OK, novo usuário cadastrado.")
         
     } catch (error) {
         res.status(500).send(error.message)
