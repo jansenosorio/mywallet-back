@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 import db from "../config/database.js";
 import { uuid } from 'uuidv4'
 
-
 //Function to controll Signup
 
 export async function SingUp (req, res) {
@@ -44,7 +43,8 @@ export async function Login ( req, res ) {
 
         res.status(200).send({
             token,
-            name: userCheck.name
+            name: userCheck.name,
+            email: userCheck.email
         })
 
     } catch (error) {
