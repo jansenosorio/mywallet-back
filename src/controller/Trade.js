@@ -7,13 +7,17 @@ export async function IncomeExpenses(req, res) {
 
   const timeElapsed = Date.now();
   const today = new Date(timeElapsed).toLocaleDateString("pt-BR");
+  const newToday = today.slice(0, 5)
+
+  const newValue = Number(value).toFixed(2)
+ 
 
   try {
     const { idUser } = await db.collection("session").find({ token });
 
     await db.collection("IncExp").insertOne({
-      date: today,
-      value: value,
+      date: newToday,
+      value: newValue,
       type: type,
       description: description,
       idUser: email,
@@ -26,11 +30,9 @@ export async function IncomeExpenses(req, res) {
 }
 
 export async function userResume(req, res) {
-    const { email } = req.body
 
     try {
-        const body = await db.collection('IncExp').find({ idUser: email }).toArray()
-        console.log(body)
+        const body = await db.collection('IncExp').find().toArray()
         res.send(body)
     } catch (error) {   
         res.send(500).status(error)
